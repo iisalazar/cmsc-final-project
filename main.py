@@ -1,4 +1,3 @@
-from db import db
 from services.FriendService import FriendService
 from services.TransactionService import TransactionService
 
@@ -12,13 +11,14 @@ def run():
     friendService = FriendService()
     friends = friendService.get_friends()
     for friend in friends:
-        print(friend)
+        print(friend.id)
+        print(friend.name)
 
     transaction = TransactionService()
     transactions = transaction.get_user_transactions(1)
     print("Transactions:")
-    for transaction in transactions:
-        print(transaction)
+    # for transaction in transactions:
+    #     print(transaction)
 
 
 if __name__ == "__main__":
