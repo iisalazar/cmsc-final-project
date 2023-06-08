@@ -54,12 +54,18 @@ class FriendController:
         for person in choices:
             print("[" + str(person.id) + "]\t" + person.name)
 
-        id = input("\nEnter friend Id: ")
-        name = input("Enter a new name: ")
+        id = input("\nEnter friend ID: ")
+        counter = 0
 
-        result = FriendService.edit_friend(self, name, id)
-
-        print(result)
+        for person in choices:
+            counter += 1
+            if str(person.id) == id:
+                name = input("Enter a new name: ")
+                result = FriendService.edit_friend(self, name, id)
+                print(result)
+                break
+            elif counter == len(choices):
+                print("Friend ID not found.")
 
     def delete_friend(self):
         print("\nChoose Person ID to delete\n")
@@ -69,10 +75,16 @@ class FriendController:
             print("[" + str(person.id) + "]\t" + person.name)
 
         id = input("\nEnter friend Id: ")
+        counter = 0
 
-        result = FriendService.delete_friend(self, id)
-
-        print(result)
+        for person in choices:
+            counter += 1
+            if str(person.id) == id:
+                result = FriendService.delete_friend(self, id)
+                print(result)
+                break
+            elif counter == len(choices):
+                print("Friend ID not found.")
 
     def view_friends(self):
         result = FriendService.get_friends(self)
