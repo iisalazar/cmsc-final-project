@@ -51,42 +51,7 @@ FROM
         return balance
 
     def get_friends_with_balance(self) -> List[Person]:
-        cursor = db.cursor()
-        cursor.execute(
-            """
-SELECT 
-  q1.personId, 
-  q1.borrowerAmount - q2.lenderAmount AS difference 
-FROM 
-  (
-    SELECT 
-      p.id as personId, 
-      SUM(t.amount) as borrowerAmount 
-    FROM 
-      person AS p 
-      INNER JOIN transaction AS t ON t.lendeeId = p.id 
-    WHERE 
-      p.isUser = 0 
-    GROUP BY 
-      p.id
-  ) as q1 
-  INNER JOIN (
-    SELECT 
-      p.id as personId, 
-      SUM(t.amount) as lenderAmount 
-    FROM 
-      person AS p 
-      INNER JOIN transaction AS t ON t.lenderId = p.id 
-    WHERE 
-      p.isUser = 0 
-    GROUP BY 
-      p.id
-  ) as q2 ON q1.personId = q2.personId 
-WHERE 
-  q1.borrowerAmount - q2.lenderAmount > 0;
-"""
-        )
-        rows = cursor.fetchall()
+        raise NotImplementedError("Not implemented yet")
 
     def get_groups_with_outstanding_balance(self) -> List[Tuple[int, int]]:
         cursor = db.cursor()
