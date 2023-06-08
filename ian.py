@@ -16,6 +16,7 @@ from services.ExpenseService import (
     CreateFriendExpenseDto,
     CreateGroupExpenseDto,
 )
+from services.BalanceService import BalanceService
 from pprint import PrettyPrinter
 
 pp = PrettyPrinter(indent=4)
@@ -74,6 +75,15 @@ def run():
     pp.pprint(expenses_with_friend)
     print("======================")
     pp.pprint(expenses_in_groups)
+    print("======================")
+
+    balanceService = BalanceService()
+    balance = balanceService.get_current_balance()
+    print("Balance: ", balance)
+    print("======================")
+    print("Groups with balance")
+    groups_with_balance = balanceService.get_groups_with_outstanding_balance()
+    pp.pprint(groups_with_balance)
     # print("Expenses:")
     # for e in expenses:
     #     print(e)
