@@ -99,10 +99,10 @@ class ExpenseService(TransactionService):
         cursor.close()
 
     def update_expense(self, id: int, expense: UpdateTransactionDto):
-        self.update_transaction(id, expense)
+        self.update_transaction(id, expense, type="expense")
 
     def delete_expense(self, id: int):
-        self.delete_transaction(id)
+        self.delete_transaction(id, "expense")
 
     def get_expenses_for_this_month(self) -> List[Transaction]:
         cursor = db.cursor()

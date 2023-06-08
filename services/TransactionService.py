@@ -51,17 +51,19 @@ class TransactionService:
 
         return transactions
 
-    def update_transaction(self, id: int, transaction: UpdateTransactionDto):
+    def update_transaction(self, id: int, transaction: UpdateTransactionDto, type: str):
         cursor = db.cursor()
         cursor.execute(
-            "UPDATE transaction SET name = %s, amount = %s WHERE id = %s",
-            (transaction.name, transaction.amount, id),
+            "UPDATE transaction SET name = %s, amount = %s WHERE id = %s AND type = %s",
+            (transaction.name, transaction.amount, id, type),
         )
         db.commit()
         cursor.close()
 
-    def delete_transaction(self, id: int):
+    def delete_transaction(self, id: int, type: str):
         cursor = db.cursor()
-        cursor.execute("DELETE FROM transaction WHERE id = %s", (id,))
+        cursor.execute(
+            "DELETE FROM transaction WHERE id = %s AND type = %s", (id, type)
+        )
         db.commit()
         cursor.close()

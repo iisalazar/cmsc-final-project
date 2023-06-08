@@ -9,7 +9,6 @@ from entities.Transaction import Transaction
 class CreatePaymentDto:
     amount: int
     name: str
-    date: str
 
 
 @dataclass
@@ -91,7 +90,33 @@ class PaymentService(TransactionService):
     def update_payment(
         self, payment_id: int, payment: UpdateTransactionDto
     ) -> Transaction:
-        self.update_transaction(payment_id, payment)
+        self.update_transaction(payment_id, payment, type="payment")
 
     def delete_payment(self, payment_id: int) -> None:
-        self.delete_transaction(payment_id)
+        self.delete_transaction(payment_id, "payment")
+
+    def view_payments(self, person_id: int) -> List[Transaction]:
+        cursor = db.cursor()
+        cursor.execute(
+            "SELECT * FROM transaction WHERE personId = %s AND type = 'payment'",
+            (person_id,),
+        )
+        results = cursor.fetchall()
+        payments: List[Transaction] = []
+
+        for result in results:
+            payments.append(
+                Transaction(
+                    result[0],
+                    result[1],
+                    result[2],
+                    result[3],
+                    result[4],
+                    result[5],
+                    result[6],
+                    result[7],
+                    result[8],
+                )
+            )
+        cursor.close()
+        return payments
