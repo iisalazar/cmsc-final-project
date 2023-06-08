@@ -2,7 +2,9 @@ import mysql.connector
 
 MYSQL_HOST = "localhost"
 MYSQL_USER = "root"
-MYSQL_PASS = "quimzyrelle15"
+
+MYSQL_PASS = "UPlangmalakaz"
+
 MYSQL_DB = "splitwise_clone"
 
 
