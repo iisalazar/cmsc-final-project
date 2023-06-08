@@ -1,6 +1,7 @@
 from services.FriendService import FriendService
 from services.BalanceService import BalanceService
 from services.ExpenseService import ExpenseService
+from services.GroupService import GroupService
 from utils.clearScreen import clear_screen
 
 
@@ -9,6 +10,7 @@ class ReportController:
         self.balance_service = BalanceService()
         self.expense_service = ExpenseService()
         self.friend_service = FriendService()
+        self.group_service = GroupService()
         self.register_request_method_map()
 
     def register_request_method_map(self):
@@ -141,7 +143,17 @@ class ReportController:
                 print("------------------------------------")
 
     def view_all_groups(self):
-        pass
+        result = self.group_service.view_all_groups()
+
+        if len(result) == 0:
+            print("There are no existing groups")
+        else:
+            print("\nAll groups: \n")
+            for group in result:
+                print("Group ID: " + str(group["id"]))
+                print("Name: " + group["name"])
+                print("Date created: " + str(group["date"]))
+                print("------------------------------------")
 
     def view_all_groups_with_outstanding_balance(self):
         result = self.balance_service.get_groups_with_outstanding_balance()
