@@ -87,7 +87,6 @@ SELECT
 """
         )
         rows = cursor.fetchall()
-        print(rows)
         result = []
         for row in rows:
             result.append(row)
