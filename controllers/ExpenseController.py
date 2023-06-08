@@ -7,14 +7,15 @@ class ExpenseController:
         self.expense_service = ExpenseService()
         self.request_method_map = {
             1: self.create_expense,
-            2: self.update_expense,
-            3: self.delete_expense,
-            4: self.view_all_expenses,
-            5: clear_screen,
+            2: self.create_expense_group,
+            3: self.update_expense,
+            4: self.delete_expense,
+            5: self.view_all_expenses,
+            6: clear_screen,
         }
 
     def handle_user_input(self):
-        valid_choices = [0, 1, 2, 3, 4, 5]
+        valid_choices = [0, 1, 2, 3, 4, 5, 6]
         choice = -1
         while choice != 0:
             self.print_choices()
@@ -30,16 +31,18 @@ class ExpenseController:
         print(
             """
 0. Go Back
-1. Create expense
-2. Update expense
-3. Delete expense
-4. View all expenses
-5. Clear screen
+1. Create expense for a person
+2. Create expense for a group
+3. Update expense
+4. Delete expense
+5. View all expenses
+6. Clear screen
 """
         )
 
     def create_expense(self):
-        pass
+        amount = float(input("Enter amount: "))
+        name = input("Enter name: ")
 
     def update_expense(self):
         pass
