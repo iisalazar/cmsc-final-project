@@ -1,6 +1,7 @@
 from controllers.ReportController import ReportController
 from controllers.ExpenseController import ExpenseController
 from controllers.PaymentController import PaymentController
+from controllers.FriendController import FriendController
 from utils.clearScreen import clear_screen
 
 
@@ -13,6 +14,7 @@ class Application:
             "report": ReportController(),
             "expense": ExpenseController(),
             "payment": PaymentController(),
+            "friend": FriendController(),
         }
 
     def handle_request(self, choice):
@@ -24,7 +26,7 @@ class Application:
         elif choice == 2:
             self.controllers["payment"].handle_user_input()
         elif choice == 3:
-            pass
+            self.controllers["friend"].handle_user_input()
         if choice == 4:
             pass
         elif choice == 5:
