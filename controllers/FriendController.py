@@ -16,17 +16,17 @@ class FriendController:
         }
 
     def handle_user_input(self):
-        valid_choices = [0, 1, 2, 3, 4, 5, 6]
+        valid_choices = ["0", "1", "2", "3", "4", "5", "6"]
         choice = -1
         while choice != 0:
             self.print_choices()
-            choice = int(input("Enter choice: "))
-            if choice not in valid_choices:
+            choice = input("Enter choice: ")
+            if choice not in valid_choices or not choice.isnumeric():
                 print("Invalid choice")
                 continue
             if choice == 0:
                 break
-            self.request_method_map[choice]()
+            self.request_method_map[int(choice)]()
 
     def print_choices(self):
         print(
