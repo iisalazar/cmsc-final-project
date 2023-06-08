@@ -10,7 +10,6 @@ from services.TransactionService import TransactionService, UpdateTransactionDto
 class CreateExpenseDto:
     amount: int
     name: str
-    date: str
 
 
 @dataclass
@@ -65,7 +64,7 @@ class ExpenseService(TransactionService):
             "expense",
         )
 
-    def create_group_expense(self, expense: CreateGroupExpenseDto) -> Transaction:
+    def create_group_expense(self, expense: CreateGroupExpenseDto) -> None:
         cursor = db.cursor()
 
         # creating a group expense creates invididual expenses for each member of the group
@@ -79,6 +78,8 @@ class ExpenseService(TransactionService):
         persons: List[Person] = []
         for row in rows:
             persons.append(Person(row[0], row[1], row[2]))
+
+        print(persons)
 
         # creating a group expense creates invididual expenses for each member of the group
         for person in persons:
@@ -97,23 +98,11 @@ class ExpenseService(TransactionService):
         db.commit()
         cursor.close()
 
-        return Transaction(
-            cursor.lastrowid,
-            expense.name,
-            expense.amount,
-            None,
-            None,
-            expense.grp_id,
-            expense.lender_id,
-            None,
-            "expense",
-        )
-
     def update_expense(self, id: int, expense: UpdateTransactionDto):
-        self.update_transaction(id, expense)
+        self.update_transaction(id, expense, type="expense")
 
     def delete_expense(self, id: int):
-        self.delete_transaction(id)
+        self.delete_transaction(id, "expense")
 
     def get_expenses_for_this_month(self) -> List[Transaction]:
         cursor = db.cursor()
@@ -134,7 +123,7 @@ class ExpenseService(TransactionService):
         cursor = db.cursor()
 
         cursor.execute(
-            "SELECT * FROM transaction AS t WHERE t.type = 'expense' AND t.dateCreated BETWEEN DATE_FORMAT(NOW(), '%Y-%m-01') AND LAST_DAY(NOW()) AND personId=%s",
+            "SELECT * FROM transaction AS t WHERE t.type = 'expense' AND personId=%s",
             (friend_id,),
         )
 
