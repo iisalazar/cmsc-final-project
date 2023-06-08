@@ -48,7 +48,13 @@ class FriendController:
         print(result)
 
     def update_friend(self):
-        id = input("Enter friend Id: ")
+        print("\nChoose Person ID to edit\n")
+
+        choices = FriendService.get_friends(self)
+        for person in choices:
+            print("[" + str(person.id) + "]\t" + person.name)
+
+        id = input("\nEnter friend Id: ")
         name = input("Enter a new name: ")
 
         result = FriendService.edit_friend(self, name, id)
@@ -56,7 +62,13 @@ class FriendController:
         print(result)
 
     def delete_friend(self):
-        id = input("Enter friend Id: ")
+        print("\nChoose Person ID to delete\n")
+
+        choices = FriendService.get_friends(self)
+        for person in choices:
+            print("[" + str(person.id) + "]\t" + person.name)
+
+        id = input("\nEnter friend Id: ")
 
         result = FriendService.delete_friend(self, id)
 
@@ -64,5 +76,8 @@ class FriendController:
 
     def view_friends(self):
         result = FriendService.get_friends(self)
+        print("\nAll Friends:\n")
         for person in result:
-            print(person)
+            print("Person ID: " + str(person.id))
+            print("Name: " + person.name)
+            print("------------------------------")
