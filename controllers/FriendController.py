@@ -6,7 +6,7 @@ from utils.clearScreen import clear_screen
 
 class FriendController:
     def __init__(self) -> None:
-        self.friend_servise = FriendService()
+        self.friend_service = FriendService()
         self.request_method_map = {
             1: self.create_friend,
             2: self.update_friend,
@@ -24,7 +24,7 @@ class FriendController:
             if choice not in valid_choices or not choice.isnumeric():
                 print("Invalid choice")
                 continue
-            if choice == 0:
+            if choice == "0":
                 break
             self.request_method_map[int(choice)]()
 
@@ -43,14 +43,14 @@ class FriendController:
     def create_friend(self):
         name = input("Enter a name: ")
 
-        result = FriendService.add_friend(self, name)
+        result = self.friend_service.add_friend(name)
 
         print(result)
 
     def update_friend(self):
         print("\nChoose Person ID to edit\n")
 
-        choices = FriendService.get_friends(self)
+        choices = self.friend_service.get_friends()
         for person in choices:
             print("[" + str(person.id) + "]\t" + person.name)
 
@@ -61,7 +61,7 @@ class FriendController:
             counter += 1
             if str(person.id) == id:
                 name = input("Enter a new name: ")
-                result = FriendService.edit_friend(self, name, id)
+                result = self.friend_service.edit_friend(name, id)
                 print(result)
                 break
             elif counter == len(choices):
@@ -70,7 +70,7 @@ class FriendController:
     def delete_friend(self):
         print("\nChoose Person ID to delete\n")
 
-        choices = FriendService.get_friends(self)
+        choices = self.friend_service.get_friends()
         for person in choices:
             print("[" + str(person.id) + "]\t" + person.name)
 
@@ -80,14 +80,14 @@ class FriendController:
         for person in choices:
             counter += 1
             if str(person.id) == id:
-                result = FriendService.delete_friend(self, id)
+                result = self.friend_service.delete_friend(id)
                 print(result)
                 break
             elif counter == len(choices):
                 print("Friend ID not found.")
 
     def view_friends(self):
-        result = FriendService.get_friends(self)
+        result = self.friend_service.get_friends()
         print("\nAll Friends:\n")
         for person in result:
             print("Person ID: " + str(person.id))

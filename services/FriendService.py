@@ -13,7 +13,6 @@ class FriendService:
         return f"Successfully added a friend named {name}"
     
     def get_friends(self):
-        db.reconnect()
         cursor = db.cursor()
         cursor.execute("SELECT * FROM person WHERE person.isUser = 0")
         rows = list(cursor.fetchall())
@@ -29,7 +28,6 @@ class FriendService:
         return friends
     
     def delete_friend(self, id):
-        db.reconnect()
         cursor = db.cursor()
         cursor.execute(
             'DELETE FROM transaction WHERE lenderId = %s OR lendeeId = %s', (id, id,)
