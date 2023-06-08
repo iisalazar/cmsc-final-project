@@ -10,6 +10,7 @@ A CLI app that simulates the features of the mobile app 'Splitwise'
 ## Dependencies
 - pip
 - pipenv
+- mysql-python-connector
 
 ## How to run
 1. You must have python3 and pipenv installed
