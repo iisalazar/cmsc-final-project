@@ -1,5 +1,7 @@
+from services.FriendService import FriendService
 from services.BalanceService import BalanceService
 from services.ExpenseService import ExpenseService
+from services.GroupService import GroupService
 from utils.clearScreen import clear_screen
 
 
@@ -7,6 +9,8 @@ class ReportController:
     def __init__(self):
         self.balance_service = BalanceService()
         self.expense_service = ExpenseService()
+        self.friend_service = FriendService()
+        self.group_service = GroupService()
         self.register_request_method_map()
 
     def register_request_method_map(self):
@@ -52,17 +56,46 @@ class ReportController:
 
     def view_all_expenses_within_a_month(self):
         result = self.expense_service.get_expenses_for_this_month()
-        print("Expenses for this month:")
-        for expense in result:
-            print(expense)
+
+        if len(result) == 0:
+            print("You have no expenses within this month")
+        else :
+            print("Expenses for this month: \n")
+            for expense in result:
+                lender = self.friend_service.get_friend_by_id(expense.lenderId)
+                lendee = self.friend_service.get_friend_by_id(expense.lendeeId)
+                # print(str(expense) + "\n")
+                print("Transation id: " + str(expense.id))
+                print("Name: " + expense.name)
+                print("Amount: " + str(expense.amount))
+                print("Date: " + str(expense.dateCreated))
+                print("Lender: " + lender.name)
+                print("Lendee: " + lendee.name)
+                print("Type: " + expense.type)
+                print("------------------------------------")
 
     def view_all_expenses_with_a_friend(self):
         try:
             friend_id = int(input("Enter friend id: "))
             result = self.expense_service.get_expenses_with_friend(friend_id)
-            print("Expenses with friend:")
-            for expense in result:
-                print(expense)
+            friend = self.friend_service.get_friend_by_id(friend_id)
+            
+            if len(result) == 0:
+                print("You have no expenses with " + friend.name)
+            else :
+                print("\nYour expenses with " + friend.name + ":\n")
+                for expense in result:
+                    lender = self.friend_service.get_friend_by_id(expense.lenderId)
+                    lendee = self.friend_service.get_friend_by_id(expense.lendeeId)
+
+                    print("Transation id: " + str(expense.id))
+                    print("Name: " + expense.name)
+                    print("Amount: " + str(expense.amount))
+                    print("Date: " + str(expense.dateCreated))
+                    print("Lender: " + lender.name)
+                    print("Lendee: " + lendee.name)
+                    print("Type: " + expense.type)
+                    print("------------------------------------")
         except ValueError:
             print("Invalid friend id")
             return
@@ -71,9 +104,23 @@ class ReportController:
         try:
             group_id = int(input("Enter group id: "))
             result = self.expense_service.get_group_expenses(group_id)
-            print("Expenses with group:")
-            for expense in result:
-                print(expense)
+            
+            if len(result) == 0:
+                print("You have no expenses with this group")
+            else :
+                print("\nExpenses with group:\n")
+                for expense in result:
+                    lender = self.friend_service.get_friend_by_id(expense.lenderId)
+                    lendee = self.friend_service.get_friend_by_id(expense.lendeeId)
+
+                    print("Transaction id: " + str(expense.id))
+                    print("Transaction name: " + expense.name)
+                    print("Amount: " + str(expense.amount))
+                    print("Date: " + str(expense.dateCreated))
+                    print("Lender: " + lender.name)
+                    print("Lendee: " + lendee.name)
+                    print("Type: " + expense.type)
+                    print("------------------------------------")
         except ValueError:
             print("Invalid group id")
             return
@@ -84,15 +131,38 @@ class ReportController:
 
     def view_all_friends_with_outstanding_balance(self):
         result = self.balance_service.get_friends_with_balance()
-        print("Friends with outstanding balance:")
-        for friend in result:
-            print(friend)
+
+        if len(result) == 0:
+            print("All friends has no outstanding balance")
+        else: 
+            print("\nFriends with outstanding balance:\n")
+            for tuple in result:
+                friend = self.friend_service.get_friend_by_id(tuple[0])
+                print("Friend: " + friend.name)
+                print("Amount: " + str(tuple[1]))
+                print("------------------------------------")
 
     def view_all_groups(self):
-        pass
+        result = self.group_service.view_all_groups()
+
+        if len(result) == 0:
+            print("There are no existing groups")
+        else:
+            print("\nAll groups: \n")
+            for group in result:
+                print("Group ID: " + str(group["id"]))
+                print("Name: " + group["name"])
+                print("Date created: " + str(group["date"]))
+                print("------------------------------------")
 
     def view_all_groups_with_outstanding_balance(self):
         result = self.balance_service.get_groups_with_outstanding_balance()
-        print("Groups with outstanding balance:")
-        for group in result:
-            print(group)
+
+        if len(result) == 0:
+            print("All groups has no outstanding balance")
+        else: 
+            print("\nGroups with outstanding balance:\n")
+            for group in result:
+                print("Group id: " + str(group[0]))
+                print("Amount: " + str(group[1]))
+                print("------------------------------------")
