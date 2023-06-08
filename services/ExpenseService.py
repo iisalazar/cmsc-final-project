@@ -114,3 +114,56 @@ class ExpenseService(TransactionService):
 
     def delete_expense(self, id: int):
         self.delete_transaction(id)
+
+    def get_expenses_for_this_month(self) -> List[Transaction]:
+        cursor = db.cursor()
+
+        cursor.execute(
+            "SELECT * FROM transaction AS t WHERE t.type = 'expense' AND t.dateCreated BETWEEN DATE_FORMAT(NOW(), '%Y-%m-01') AND LAST_DAY(NOW())"
+        )
+        rows = cursor.fetchall()
+        result: List[Transaction] = []
+        cursor.close()
+
+        for row in rows:
+            result.append(Transaction(*row))
+
+        return result
+
+    def get_expenses_with_friend(self, friend_id: int) -> List[Transaction]:
+        cursor = db.cursor()
+
+        cursor.execute(
+            "SELECT * FROM transaction AS t WHERE t.type = 'expense' AND t.dateCreated BETWEEN DATE_FORMAT(NOW(), '%Y-%m-01') AND LAST_DAY(NOW()) AND personId=%s",
+            (friend_id,),
+        )
+
+        rows = cursor.fetchall()
+
+        result: List[Transaction] = []
+
+        cursor.close()
+
+        for row in rows:
+            result.append(Transaction(*row))
+
+        return result
+
+    def get_group_expenses(self, group_id: int) -> List[Transaction]:
+        cursor = db.cursor()
+
+        cursor.execute(
+            "SELECT * FROM transaction AS t WHERE t.type = 'expense' AND grpId=%s",
+            (group_id,),
+        )
+
+        rows = cursor.fetchall()
+
+        result: List[Transaction] = []
+
+        cursor.close()
+
+        for row in rows:
+            result.append(Transaction(*row))
+
+        return result

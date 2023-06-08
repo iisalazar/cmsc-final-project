@@ -1,7 +1,7 @@
 from services.TransactionService import TransactionService, UpdateTransactionDto
 from db import db
 from dataclasses import dataclass
-
+from typing import List
 from entities.Transaction import Transaction
 
 
@@ -23,6 +23,7 @@ class CreateFriendPaymentDto(CreatePaymentDto):
 class CreateGroupPaymentDto(CreatePaymentDto):
     grp_id: int
     lender_id: int
+    lendee_id: int
 
 
 class PaymentService(TransactionService):
@@ -68,7 +69,7 @@ class PaymentService(TransactionService):
                 None,
                 payment.grp_id,
                 payment.lender_id,
-                None,
+                payment.lendee_id,
                 "payment",
             ),
         )
