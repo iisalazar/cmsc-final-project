@@ -10,7 +10,7 @@ class Application:
     def register_controllers(self):
         self.controllers = {
             "report": ReportController(),
-            "expense": ExpenseController(),
+            # "expense": ExpenseController(),
         }
 
     def handle_request(self, choice):
