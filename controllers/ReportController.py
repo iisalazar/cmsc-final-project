@@ -49,6 +49,7 @@ class ReportController:
     def print_choices(self):
         print(
             """
+----------------🅼 🅴 🅽 🆄----------------------
 0. Go Back
 1. View all expenses made within a month
 2. View all expenses made with a friend
@@ -58,6 +59,7 @@ class ReportController:
 6. View all groups
 7. View all groups with an outstanding balance
 8. Clear screen
+-----------------------------------------------
             """
         )
 

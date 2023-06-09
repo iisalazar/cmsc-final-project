@@ -42,6 +42,7 @@ class PaymentController:
     def print_choices(self):
         print(
             """
+----------🅼 🅴 🅽 🆄------------
 0. Go Back
 1. Create payment for a person
 2. Create payment for a group
@@ -49,6 +50,7 @@ class PaymentController:
 4. Delete payment
 5. View all payments
 6. Clear screen
+--------------------------------
 """
         )
 

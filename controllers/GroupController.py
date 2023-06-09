@@ -47,6 +47,7 @@ class GroupController:
     def print_choices(self):
         print(
             """
+---------🅼 🅴 🅽 🆄------------
 0. Go Back
 1. Create group
 2. Update group
@@ -60,14 +61,21 @@ class GroupController:
 10. Search group
 11. View person's groups
 12. Clear screen
+------------------------------
 """
         )
 
     def create_group(self):
         name = input("Enter group name: ")
         group = CreateGroupDto(name=name)
-        self.group_service.create_group(group)
-        print("Successfully added Group " + name)
+        group_id = self.group_service.create_group(group)
+        group = self.group_service.view_group(group_id)
+
+        print("\nSuccessfully created your group!")
+        print("Here are the details: ")
+        print("\nGroup ID: " + str(group.id))
+        print("Name: " + group.name)
+        print("Date Created: " + str(group.dateCreated))
 
     def update_group(self):
         _id = int(input("Enter group id: "))

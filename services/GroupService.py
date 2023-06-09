@@ -36,6 +36,8 @@ class GroupService:
         db.commit()
         cursor.close()
 
+        return cursor.lastrowid
+
     def add_person_to_group(self, person_id: int, group_id: int) -> None:
         cursor = db.cursor()
         cursor.execute(

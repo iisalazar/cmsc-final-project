@@ -61,6 +61,8 @@ class Application:
     def print_choices(self):
         print(
             """
+
+---------🅼 🅴 🅽 🆄------------
 0. Exit
 1. CRUD expense
 2. CRUD payment
@@ -68,6 +70,7 @@ class Application:
 4. CRUD group
 5. Generate report
 6. Clear screen
+-------------------------------
         """
         )
 

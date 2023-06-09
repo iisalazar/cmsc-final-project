@@ -44,6 +44,7 @@ class ExpenseController:
     def print_choices(self):
         print(
             """
+---------🅼 🅴 🅽 🆄--------------
 0. Go Back
 1. Create expense for a person
 2. Create expense for a group
@@ -51,6 +52,7 @@ class ExpenseController:
 4. Delete expense
 5. View all expenses 
 6. Clear screen
+--------------------------------
 """
         )
 
