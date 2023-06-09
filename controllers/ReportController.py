@@ -41,11 +41,11 @@ class ReportController:
 
     def handle_user_input(self):
         print(
-    '''
+            """
 ,-------------------------------------------------------,
 | █▀█ █▀▀ █▀█ █▀█ █▀█ ▀█▀ █▀  █▀ █▀▀ █▀▀ ▀█▀ █ █▀█ █▄░█ |
 | █▀▄ ██▄ █▀▀ █▄█ █▀▄ ░█░ ▄█  ▄█ ██▄ █▄▄ ░█░ █ █▄█ █░▀█ |
-'-------------------------------------------------------' '''
+'-------------------------------------------------------' """
         )
         # at this point, the user picked option 4
         valid_choices = list(self.request_method_map.keys()) + [0]
@@ -178,8 +178,11 @@ class ReportController:
                 print("------------------------------------")
 
     @staticmethod
-    def get_valid_integer_input(prompt):
+    def get_valid_integer_input(prompt, valid_choices=None):
         try:
-            return int(input(prompt))
+            value = int(input(prompt))
+            if valid_choices is not None and value not in valid_choices:
+                return None
+            return value
         except ValueError:
             return None
