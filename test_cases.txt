@@ -1,0 +1,111 @@
+Expense Prompt:
+
+1. Test creating an expense for a person:
+   - Select option 1.
+   - Enter the necessary information for creating an expense for a person.
+   - Verify that the expense is successfully created and saved.
+
+2. Test creating an expense for a group:
+   - Select option 2.
+   - Enter the necessary information for creating an expense for a group.
+   - Verify that the expense is successfully created and saved.
+
+3. Test updating an expense:
+   - Select option 3.
+   - Choose an expense to update from the list of expenses.
+   - Modify the necessary information for the expense.
+   - Verify that the expense is updated correctly.
+
+4. Test deleting an expense:
+   - Select option 4.
+   - Choose an expense to delete from the list of expenses.
+   - Confirm the deletion.
+   - Verify that the expense is successfully deleted.
+
+5. Test viewing all expenses:
+   - Select option 5.
+   - Verify that a list of all expenses is displayed correctly.
+
+Friend Prompt:
+
+1. Test creating a friend:
+   - Select option 1.
+   - Enter the necessary information for creating a friend.
+   - Verify that the friend is successfully created and saved.
+
+2. Test updating a friend's info:
+   - Select option 2.
+   - Choose a friend to update from the list of friends.
+   - Modify the necessary information for the friend.
+   - Verify that the friend's info is updated correctly.
+
+3. Test deleting a friend:
+   - Select option 3.
+   - Choose a friend to delete from the list of friends.
+   - Confirm the deletion.
+   - Verify that the friend is successfully deleted.
+
+4. Test viewing all friends:
+   - Select option 4.
+   - Verify that a list of all friends is displayed correctly.
+
+Payment Prompt:
+
+1. Test creating a payment for a person:
+   - Select option 1.
+   - Enter the necessary information for creating a payment for a person.
+   - Verify that the payment is successfully created and saved.
+
+2. Test creating a payment for a group:
+   - Select option 2.
+   - Enter the necessary information for creating a payment for a group.
+   - Verify that the payment is successfully created and saved.
+
+3. Test updating a payment:
+   - Select option 3.
+   - Choose a payment to update from the list of payments.
+   - Modify the necessary information for the payment.
+   - Verify that the payment is updated correctly.
+
+4. Test deleting a payment:
+   - Select option 4.
+   - Choose a payment to delete from the list of payments.
+   - Confirm the deletion.
+   - Verify that the payment is successfully deleted.
+
+5. Test viewing all payments:
+   - Select option 5.
+   - Verify that a list of all payments is displayed correctly.
+
+Report Prompt:
+
+1. Test viewing all expenses made within a month:
+   - Select option 1.
+   - Enter a specific month and year to filter the expenses.
+   - Verify that a list of expenses made within the specified month is displayed correctly.
+
+2. Test viewing all expenses made with a friend:
+   - Select option 2.
+   - Choose a friend from the list of friends.
+   - Verify that a list of expenses made with the selected friend is displayed correctly.
+
+3. Test viewing all expenses made with a group:
+   - Select option 3.
+   - Choose a group from the list of groups.
+   - Verify that a list of expenses made with the selected group is displayed correctly.
+
+4. Test viewing the current balance from all expenses:
+   - Select option 4.
+   - Verify that the current balance from all expenses is displayed correctly.
+
+5. Test viewing all friends with outstanding balance:
+   - Select option 5.
+   - Verify that a list of friends with outstanding balance is displayed correctly.
+
+6. Test viewing all groups:
+   - Select option 6.
+   - Verify that a list of all groups is displayed correctly.
+
+7. Test viewing all groups with outstanding balance:
+   - Select option 7.
+   - Verify that a list of groups with outstanding balance is displayed correctly.
