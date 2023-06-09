@@ -12,6 +12,10 @@ A CLI app that simulates the features of the mobile app 'Splitwise'
 - pipenv
 - mysql-python-connector
 
+## Pre-requisites
+1. Must have `mariadb` or `mysql` installed on your local machine
+2. Create the tables and seed the database by using the SQL query dumps provided
+
 ## How to run
 1. You must have python3 and pipenv installed
 2. After that, open up your terminal. Make sure you're in the directory with the source code (you should've `cd'd` to the source code by now)
