@@ -8,11 +8,21 @@ from utils.clearScreen import clear_screen
 
 
 class PaymentController:
-    def __init__(self) -> None:
+    CHOICE_PROMPT = """
+0. Go Back
+1. Create payment for a person
+2. Create payment for a group
+3. Update payment
+4. Delete payment
+5. View all payments
+6. Clear screen
+"""
+
+    def __init__(self):
         self.payment_service = PaymentService()
         self.request_method_map = {
             1: self.create_payment,
-            2: self.creaate_group_payment,
+            2: self.create_group_payment,
             3: self.update_payment,
             4: self.delete_payment,
             5: self.view_all_payments,
@@ -27,12 +37,12 @@ class PaymentController:
 | █▀▀ █▀█ ░█░ █░▀░█ ██▄ █░▀█ ░█░  ▄█ ██▄ █▄▄ ░█░ █ █▄█ █░▀█ |
 '-----------------------------------------------------------' '''
         )
-        valid_choices = [0, 1, 2, 3, 4, 5, 6]
+        valid_choices = list(self.request_method_map.keys()) + [0]
         choice = -1
         while choice != 0:
             self.print_choices()
-            choice = int(input("Enter choice: "))
-            if choice not in valid_choices:
+            choice = self.get_valid_integer_input("Enter choice: ", valid_choices)
+            if choice == -1:
                 print("Invalid choice")
                 continue
             if choice == 0:
@@ -40,22 +50,16 @@ class PaymentController:
             self.request_method_map[choice]()
 
     def print_choices(self):
-        print(
-            """
-0. Go Back
-1. Create payment for a person
-2. Create payment for a group
-3. Update payment
-4. Delete payment
-5. View all payments
-6. Clear screen
-"""
-        )
+        print(self.CHOICE_PROMPT)
 
     def create_payment(self):
-        amount = float(input("Enter amount: "))
+        amount = self.get_valid_float_input("Enter amount: ")
         name = input("Enter description: ")
-        person_id = int(input("Enter person id: "))
+        person_id = self.get_valid_integer_input("Enter person id: ")
+
+        if amount is None or person_id is None:
+            print("Invalid input. Please enter a valid number.")
+            return
 
         dto = CreateFriendPaymentDto(
             amount=amount,
@@ -66,12 +70,16 @@ class PaymentController:
         )
         self.payment_service.create_friend_payment(dto)
 
-    def creaate_group_payment(self):
-        amount = float(input("Enter amount: "))
+    def create_group_payment(self):
+        amount = self.get_valid_float_input("Enter amount: ")
         name = input("Enter description: ")
-        group_id = int(input("Enter group id: "))
-        lender_id = int(input("Enter lender id: "))
-        lendee_id = int(input("Enter lendee id: "))
+        group_id = self.get_valid_integer_input("Enter group id: ")
+        lender_id = self.get_valid_integer_input("Enter lender id: ")
+        lendee_id = self.get_valid_integer_input("Enter lendee id: ")
+
+        if amount is None or group_id is None or lender_id is None or lendee_id is None:
+            print("Invalid input. Please enter a valid number.")
+            return
 
         dto = CreateGroupPaymentDto(
             amount=amount,
@@ -83,9 +91,13 @@ class PaymentController:
         self.payment_service.create_group_payment(dto)
 
     def update_payment(self):
-        payment_id = int(input("Enter payment id: "))
-        amount = float(input("Enter amount: "))
+        payment_id = self.get_valid_integer_input("Enter payment id: ")
+        amount = self.get_valid_float_input("Enter amount: ")
         name = input("Enter description: ")
+
+        if payment_id is None or amount is None:
+            print("Invalid input. Please enter a valid number.")
+            return
 
         dto = UpdateTransactionDto(
             amount=amount,
@@ -94,12 +106,39 @@ class PaymentController:
         self.payment_service.update_payment(payment_id, dto)
 
     def delete_payment(self):
-        payment_id = int(input("Enter payment id: "))
+        payment_id = self.get_valid_integer_input("Enter payment id: ")
+
+        if payment_id is None:
+            print("Invalid input. Please enter a valid number.")
+            return
+
         self.payment_service.delete_payment(payment_id)
 
     def view_all_payments(self):
-        person_id = int(input("Enter person id: "))
+        person_id = self.get_valid_integer_input("Enter person id: ")
+
+        if person_id is None:
+            print("Invalid input. Please enter a valid number.")
+            return
+
         result = self.payment_service.view_payments(person_id)
         print("Payments:")
         for payment in result:
             print(payment)
+
+    @staticmethod
+    def get_valid_integer_input(prompt, valid_choices=None):
+        try:
+            value = int(input(prompt))
+            if valid_choices is not None and value not in valid_choices:
+                return None
+            return value
+        except ValueError:
+            return None
+
+    @staticmethod
+    def get_valid_float_input(prompt):
+        try:
+            return float(input(prompt))
+        except ValueError:
+            return None
