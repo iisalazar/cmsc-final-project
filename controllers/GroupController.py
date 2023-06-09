@@ -87,26 +87,54 @@ class GroupController:
     def view_group(self):
         _id = int(input("Enter group id: "))
         group = self.group_service.view_group(_id)
-        print(group)
+        print("\nGroup ID: " + str(group.id))
+        print("Name: " + group.name)
+        print("Date Created: " + str(group.dateCreated))
+        print("------------------------------------")
 
     def view_all_members(self):
         _id = int(input("Enter group id: "))
+        print("\nMembers in Group with ID: " + str(_id) + "\n")
         members = self.group_service.view_all_persons_in_group(_id)
         for member in members:
-            print(member)
+            print("Person ID: " + str(member.id))
+            print("Name: " + member.name)
+            print("------------------------------------")
 
     def remove_members(self):
-        _id = int(input("Enter group id: "))
-        self.group_service.remove_all_persons_from_group(_id)
+        print("\nChoose Group ID to delete all members:\n")
+
+        choices = self.group_service.view_all_groups()
+        for group in choices:
+            print("[" + str(group["id"]) + "]\t" + group["name"])
+
+        _id = input("\nEnter group id: ")
+        counter = 0
+
+        for group in choices:
+            counter += 1
+            if str(group["id"]) == str(_id):
+                self.group_service.remove_all_persons_from_group(int(_id))
+                print("Successfully removed all members from " + group["name"])
+                break
+            elif counter == len(choices):
+                print("Group ID not found.")
 
     def search_group(self):
         name = input("Enter group name: ")
         groups = self.group_service.search_group(name)
+        print("\nGroups found with name: " + name + "\n")
         for group in groups:
-            print(group)
+            print("Group ID: " + str(group.id))
+            print("Group Name: " + group.name)
+            print("------------------------------------")
 
     def view_persons_groups(self):
         person_id = int(input("Enter person id: "))
         groups = self.group_service.view_all_groups_of_person(person_id)
+        print("\nGroups joined by a person with id: " + str(person_id) + "\n")
         for group in groups:
-            print(group)
+            print("Group ID: " + str(group.id))
+            print("Name: " + group.name)
+            print("Date Created: " + str(group.dateCreated))
+            print("------------------------------------")
