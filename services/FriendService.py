@@ -20,7 +20,6 @@ class FriendService:
         friends = []
 
         for row in rows:
-            # f = str(list(row)[0])
             f = Person(row[0],  row[1], row[2])
             friends.append(f)
         
@@ -66,4 +65,18 @@ class FriendService:
         f = Person(friend[0], friend[1], friend[2])
 
         return f
+    
+    def delete_all_friends(self):
+        cursor = db.cursor()
+        cursor.execute(
+            'TRUNCATE TABLE transaction;'
+        )
+        cursor.execute(
+            'DELETE FROM person_grp where personId != 1'
+        )
+        cursor.execute(
+            'DELETE FROM person where isUser = 0'
+        )
+        db.commit()
+        cursor.close()
 

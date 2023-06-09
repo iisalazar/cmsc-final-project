@@ -11,8 +11,9 @@ class FriendController:
             1: self.create_friend,
             2: self.update_friend,
             3: self.delete_friend,
-            4: self.view_friends,
-            5: clear_screen,
+            4: self.delete_friends,
+            5: self.view_friends,
+            6: clear_screen,
         }
 
     def handle_user_input(self):
@@ -43,8 +44,9 @@ class FriendController:
 1. Create a friend
 2. Update friend's info
 3. Delete a friend
-4. View all friends
-5. Clear screen
+4. Delete all friends
+5. View all friends
+6. Clear screen
 ------------------------------
 """
         )
@@ -57,12 +59,11 @@ class FriendController:
         print(result)
 
     def update_friend(self):
-        print("\nChoose Person ID to edit\n")
-
         choices = self.friend_service.get_friends()
         if not choices:
             print("You have no friends yet. Try adding one. :)")
         else:
+            print("\nChoose Person ID to edit\n")
             for person in choices:
                 print("[" + str(person.id) + "]\t" + person.name)
 
@@ -80,12 +81,11 @@ class FriendController:
                     print("Friend ID not found.")
 
     def delete_friend(self):
-        print("\nChoose Person ID to delete\n")
-
         choices = self.friend_service.get_friends()
         if not choices:
             print("You have no friends yet. Try adding one. :)")
         else:
+            print("\nChoose Person ID to delete\n")
             for person in choices:
                 print("[" + str(person.id) + "]\t" + person.name)
 
@@ -100,6 +100,10 @@ class FriendController:
                     break
                 elif counter == len(choices):
                     print("Friend ID not found.")
+
+    def delete_friends(self):
+        self.friend_service.delete_all_friends()
+        print("\nSuccessfully deleted all friends.\n")
 
     def view_friends(self):
         result = self.friend_service.get_friends()
