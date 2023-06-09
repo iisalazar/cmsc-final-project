@@ -47,7 +47,7 @@ class GroupController:
     def print_choices(self):
         print(
             """
----------🅼 🅴 🅽 🆄------------
+-----------🅼 🅴 🅽 🆄------------
 0. Go Back
 1. Create group
 2. Update group

@@ -10,7 +10,7 @@ from utils.clearScreen import clear_screen
 
 class ExpenseController:
     CHOICE_PROMPT = """
----------------🅼 🅴 🅽 🆄---------------
+----------------🅼 🅴 🅽 🆄----------------
 0. Go Back
 1. Create expense for a person
 2. Create expense for a group

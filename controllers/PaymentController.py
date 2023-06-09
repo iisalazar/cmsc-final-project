@@ -9,7 +9,7 @@ from utils.clearScreen import clear_screen
 
 class PaymentController:
     CHOICE_PROMPT = """
----------------🅼 🅴 🅽 🆄---------------
+----------------🅼 🅴 🅽 🆄----------------
 0. Go Back
 1. Create payment for a person
 2. Create payment for a group

@@ -38,7 +38,7 @@ class FriendController:
     def print_choices(self):
         print(
             """
----------🅼 🅴 🅽 🆄------------
+-----------🅼 🅴 🅽 🆄------------
 0. Go Back
 1. Create a friend
 2. Update friend's info
@@ -60,45 +60,54 @@ class FriendController:
         print("\nChoose Person ID to edit\n")
 
         choices = self.friend_service.get_friends()
-        for person in choices:
-            print("[" + str(person.id) + "]\t" + person.name)
+        if not choices:
+            print("You have no friends yet. Try adding one. :)")
+        else:
+            for person in choices:
+                print("[" + str(person.id) + "]\t" + person.name)
 
-        id = input("\nEnter friend ID: ")
-        counter = 0
+            id = input("\nEnter friend ID: ")
+            counter = 0
 
-        for person in choices:
-            counter += 1
-            if str(person.id) == id:
-                name = input("Enter a new name: ")
-                result = self.friend_service.edit_friend(name, id)
-                print(result)
-                break
-            elif counter == len(choices):
-                print("Friend ID not found.")
+            for person in choices:
+                counter += 1
+                if str(person.id) == id:
+                    name = input("Enter a new name: ")
+                    result = self.friend_service.edit_friend(name, id)
+                    print(result)
+                    break
+                elif counter == len(choices):
+                    print("Friend ID not found.")
 
     def delete_friend(self):
         print("\nChoose Person ID to delete\n")
 
         choices = self.friend_service.get_friends()
-        for person in choices:
-            print("[" + str(person.id) + "]\t" + person.name)
+        if not choices:
+            print("You have no friends yet. Try adding one. :)")
+        else:
+            for person in choices:
+                print("[" + str(person.id) + "]\t" + person.name)
 
-        id = input("\nEnter friend Id: ")
-        counter = 0
+            id = input("\nEnter friend Id: ")
+            counter = 0
 
-        for person in choices:
-            counter += 1
-            if str(person.id) == id:
-                result = self.friend_service.delete_friend(id)
-                print(result)
-                break
-            elif counter == len(choices):
-                print("Friend ID not found.")
+            for person in choices:
+                counter += 1
+                if str(person.id) == id:
+                    result = self.friend_service.delete_friend(id)
+                    print(result)
+                    break
+                elif counter == len(choices):
+                    print("Friend ID not found.")
 
     def view_friends(self):
         result = self.friend_service.get_friends()
-        print("\nAll Friends:\n")
-        for person in result:
-            print("Person ID: " + str(person.id))
-            print("Name: " + person.name)
-            print("------------------------------")
+        if not result:
+            print("You have no friends yet. Try adding one. :)")
+        else:
+            print("\nAll Friends:\n")
+            for person in result:
+                print("Person ID: " + str(person.id))
+                print("Name: " + person.name)
+                print("------------------------------")
