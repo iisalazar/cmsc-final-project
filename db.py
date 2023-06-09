@@ -3,7 +3,6 @@ import mysql.connector
 MYSQL_HOST = "localhost"
 MYSQL_USER = "scott"
 MYSQL_PASS = "tiger"
-
 MYSQL_DB = "splitwise_clone"
 
 

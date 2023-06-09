@@ -38,6 +38,14 @@ class ReportController:
         }
 
     def handle_user_input(self):
+        print(
+    '''
+,-------------------------------------------------------,
+| █▀█ █▀▀ █▀█ █▀█ █▀█ ▀█▀ █▀  █▀ █▀▀ █▀▀ ▀█▀ █ █▀█ █▄░█ |
+| █▀▄ ██▄ █▀▀ █▄█ █▀▄ ░█░ ▄█  ▄█ ██▄ █▄▄ ░█░ █ █▄█ █░▀█ |
+'-------------------------------------------------------' '''
+        )
+        # at this point, the user picked option 4
         valid_choices = list(self.request_method_map.keys()) + [0]
         choice = -1
         while choice != 0:

@@ -2,6 +2,7 @@ from controllers.ReportController import ReportController
 from controllers.ExpenseController import ExpenseController
 from controllers.PaymentController import PaymentController
 from controllers.FriendController import FriendController
+from controllers.GroupController import GroupController
 from utils.clearScreen import clear_screen
 
 
@@ -15,11 +16,18 @@ class Application:
             "expense": ExpenseController(),
             "payment": PaymentController(),
             "friend": FriendController(),
+            "group": GroupController(),
         }
 
     def handle_request(self, choice):
         if choice == 0:
-            print("Good bye!")
+            print(
+    '''
+,--------------------------------,
+| █▄▄ █▄█ █▀▀  █▄▄ █▄█ █▀▀ ░ ░ ░ |
+| █▄█ ░█░ ██▄  █▄█ ░█░ ██▄ ▄ ▄ ▄ |
+'--------------------------------' '''
+        )
             return
         if choice == 1:
             self.controllers["expense"].handle_user_input()
@@ -28,7 +36,7 @@ class Application:
         elif choice == 3:
             self.controllers["friend"].handle_user_input()
         if choice == 4:
-            pass
+            self.controllers["group"].handle_user_input()
         elif choice == 5:
             self.controllers["report"].handle_user_input()
         elif choice == 6:
@@ -38,7 +46,13 @@ class Application:
 
     def run(self) -> None:
         choice = -1
-
+        print(
+    '''
+,-------------------------------------------------------,
+| █▀ █▀█ █░░ █ ▀█▀ █░█░█ █ █▀ █▀▀  █▀▀ █░░ █▀█ █▄░█ █▀▀ |
+| ▄█ █▀▀ █▄▄ █ ░█░ ▀▄▀▄▀ █ ▄█ ██▄  █▄▄ █▄▄ █▄█ █░▀█ ██▄ |
+'-------------------------------------------------------' '''
+        )
         while choice != 0:
             self.print_choices()
             choice = int(input("Enter choice: "))
