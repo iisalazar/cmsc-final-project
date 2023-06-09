@@ -7,6 +7,7 @@ from utils.clearScreen import clear_screen
 
 class ReportController:
     CHOICE_PROMPT = """
+------------------🅼 🅴 🅽 🆄----------------------
 0. Go Back
 1. View all expenses made within a month
 2. View all expenses made with a friend
@@ -16,6 +17,7 @@ class ReportController:
 6. View all groups
 7. View all groups with an outstanding balance
 8. Clear screen
+-------------------------------------------------
 """
 
     def __init__(self):
@@ -39,11 +41,11 @@ class ReportController:
 
     def handle_user_input(self):
         print(
-    '''
+            """
 ,-------------------------------------------------------,
 | █▀█ █▀▀ █▀█ █▀█ █▀█ ▀█▀ █▀  █▀ █▀▀ █▀▀ ▀█▀ █ █▀█ █▄░█ |
 | █▀▄ ██▄ █▀▀ █▄█ █▀▄ ░█░ ▄█  ▄█ ██▄ █▄▄ ░█░ █ █▄█ █░▀█ |
-'-------------------------------------------------------' '''
+'-------------------------------------------------------' """
         )
         # at this point, the user picked option 4
         valid_choices = list(self.request_method_map.keys()) + [0]
@@ -176,8 +178,11 @@ class ReportController:
                 print("------------------------------------")
 
     @staticmethod
-    def get_valid_integer_input(prompt):
+    def get_valid_integer_input(prompt, valid_choices=None):
         try:
-            return int(input(prompt))
+            value = int(input(prompt))
+            if valid_choices is not None and value not in valid_choices:
+                return None
+            return value
         except ValueError:
             return None

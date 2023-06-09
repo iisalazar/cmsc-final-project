@@ -38,12 +38,14 @@ class FriendController:
     def print_choices(self):
         print(
             """
+---------🅼 🅴 🅽 🆄------------
 0. Go Back
 1. Create a friend
 2. Update friend's info
 3. Delete a friend
 4. View all friends
 5. Clear screen
+------------------------------
 """
         )
 
