@@ -69,8 +69,8 @@ class ExpenseService(TransactionService):
 
         # creating a group expense creates invididual expenses for each member of the group
         cursor.execute(
-            "SELECT p.* FROM person AS p INNER JOIN person_grp AS gp ON p.id = gp.personId WHERE gp.grpId = %s",
-            (expense.grp_id,),
+            "SELECT p.* FROM person AS p INNER JOIN person_grp AS gp ON p.id = gp.personId WHERE gp.grpId = %s AND p.id != %s",
+            (expense.grp_id, expense.lender_id),
         )
 
         rows = cursor.fetchall()

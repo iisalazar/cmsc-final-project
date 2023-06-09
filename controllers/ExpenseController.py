@@ -87,6 +87,7 @@ class ExpenseController:
         amount = self.get_valid_float_input(self.AMOUNT_PROMPT)
         name = input(self.DESCRIPTION_PROMPT)
         group_id = self.get_valid_integer_input(self.GROUP_ID_PROMPT)
+        lender_id = self.get_valid_integer_input("Enter lender id: ")
 
         if amount is None or group_id is None:
             print("Invalid input. Please enter a valid number.")
@@ -96,7 +97,7 @@ class ExpenseController:
             amount=amount,
             name=name,
             grp_id=group_id,
-            lender_id=1,
+            lender_id=lender_id,
         )
 
         self.expense_service.create_group_expense(dto)
