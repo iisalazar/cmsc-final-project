@@ -21,7 +21,13 @@ class Application:
 
     def handle_request(self, choice):
         if choice == 0:
-            print("Good bye!")
+            print(
+    '''
+,--------------------------------,
+| █▄▄ █▄█ █▀▀  █▄▄ █▄█ █▀▀ ░ ░ ░ |
+| █▄█ ░█░ ██▄  █▄█ ░█░ ██▄ ▄ ▄ ▄ |
+'--------------------------------' '''
+        )
             return
         if choice == 1:
             self.controllers["expense"].handle_user_input()
@@ -40,7 +46,13 @@ class Application:
 
     def run(self) -> None:
         choice = -1
-
+        print(
+    '''
+,-------------------------------------------------------,
+| █▀ █▀█ █░░ █ ▀█▀ █░█░█ █ █▀ █▀▀  █▀▀ █░░ █▀█ █▄░█ █▀▀ |
+| ▄█ █▀▀ █▄▄ █ ░█░ ▀▄▀▄▀ █ ▄█ ██▄  █▄▄ █▄▄ █▄█ █░▀█ ██▄ |
+'-------------------------------------------------------' '''
+        )
         while choice != 0:
             self.print_choices()
             choice = int(input("Enter choice: "))
