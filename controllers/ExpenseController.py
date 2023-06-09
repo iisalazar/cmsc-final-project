@@ -9,7 +9,23 @@ from utils.clearScreen import clear_screen
 
 
 class ExpenseController:
-    def __init__(self) -> None:
+    CHOICE_PROMPT = """
+0. Go Back
+1. Create expense for a person
+2. Create expense for a group
+3. Update expense
+4. Delete expense
+5. View all expenses 
+6. Clear screen
+"""
+    AMOUNT_PROMPT = "Enter amount: "
+    DESCRIPTION_PROMPT = "Enter description: "
+    PERSON_ID_PROMPT = "Enter person id: "
+    GROUP_ID_PROMPT = "Enter group id: "
+    EXPENSE_ID_PROMPT = "Enter expense id: "
+    PERSON_ID_INPUT = "Enter person id: "
+
+    def __init__(self):
         self.expense_service = ExpenseService()
         self.balance_service = BalanceService()
         self.request_method_map = {
@@ -29,37 +45,32 @@ class ExpenseController:
 | ██▄ █░█ █▀▀ ██▄ █░▀█ ▄█ ██▄ ▄█  ▄█ ██▄ █▄▄ ░█░ █ █▄█ █░▀█ |
 '-----------------------------------------------------------' '''
         )
-        valid_choices = [0, 1, 2, 3, 4, 5, 6]
+        valid_choices = list(self.request_method_map.keys()) + [0]
         choice = -1
         while choice != 0:
             self.print_choices()
-            choice = int(input("Enter choice: "))
-            if choice not in valid_choices:
+            choice = self.get_valid_integer_input("Enter choice: ", valid_choices)
+            if choice == -1:
                 print("Invalid choice")
                 continue
-            if choice == 0:
+            elif choice == 0:
                 break
+            elif choice is None:
+                print("Invalid input. Please enter a valid number.")
+                continue
             self.request_method_map[choice]()
 
     def print_choices(self):
-        print(
-            """
----------🅼 🅴 🅽 🆄--------------
-0. Go Back
-1. Create expense for a person
-2. Create expense for a group
-3. Update expense
-4. Delete expense
-5. View all expenses 
-6. Clear screen
---------------------------------
-"""
-        )
+        print(self.CHOICE_PROMPT)
 
     def create_expense(self):
-        amount = float(input("Enter amount: "))
-        name = input("Enter description: ")
-        person_id = int(input("Enter person id: "))
+        amount = self.get_valid_float_input(self.AMOUNT_PROMPT)
+        name = input(self.DESCRIPTION_PROMPT)
+        person_id = self.get_valid_integer_input(self.PERSON_ID_PROMPT)
+
+        if amount is None or person_id is None:
+            print("Invalid input. Please enter a valid number.")
+            return
 
         dto = CreateFriendExpenseDto(
             amount=amount,
@@ -70,12 +81,16 @@ class ExpenseController:
         )
         result = self.expense_service.create_friend_expense(dto)
 
-        print("Created expense with id: ", result.id)
+        print("Created expense with id:", result.id)
 
     def create_group_expense(self):
-        amount = float(input("Enter amount: "))
-        name = input("Enter description: ")
-        group_id = int(input("Enter group id: "))
+        amount = self.get_valid_float_input(self.AMOUNT_PROMPT)
+        name = input(self.DESCRIPTION_PROMPT)
+        group_id = self.get_valid_integer_input(self.GROUP_ID_PROMPT)
+
+        if amount is None or group_id is None:
+            print("Invalid input. Please enter a valid number.")
+            return
 
         dto = CreateGroupExpenseDto(
             amount=amount,
@@ -87,24 +102,55 @@ class ExpenseController:
         self.expense_service.create_group_expense(dto)
 
     def update_expense(self):
-        _id = int(input("Enter expense id: "))
-        amount = float(input("Enter amount: "))
-        name = input("Enter description: ")
+        expense_id = self.get_valid_integer_input(self.EXPENSE_ID_PROMPT)
+        amount = self.get_valid_float_input(self.AMOUNT_PROMPT)
+        name = input(self.DESCRIPTION_PROMPT)
+
+        if expense_id is None or amount is None:
+            print("Invalid input. Please enter a valid number.")
+            return
 
         dto = UpdateTransactionDto(
             amount=amount,
             name=name,
         )
 
-        self.expense_service.update_expense(_id, dto)
+        self.expense_service.update_expense(expense_id, dto)
 
     def delete_expense(self):
-        _id = int(input("Enter expense id: "))
-        self.expense_service.delete_expense(_id)
+        expense_id = self.get_valid_integer_input(self.EXPENSE_ID_PROMPT)
+
+        if expense_id is None:
+            print("Invalid input. Please enter a valid number.")
+            return
+
+        self.expense_service.delete_expense(expense_id)
 
     def view_all_expenses(self):
-        person_id = int(input("Enter person id: "))
+        person_id = self.get_valid_integer_input(self.PERSON_ID_INPUT)
+
+        if person_id is None:
+            print("Invalid input. Please enter a valid number.")
+            return
+
         result = self.expense_service.get_expenses_with_friend(person_id)
         print("Expenses with friend:")
         for expense in result:
             print(expense)
+
+    @staticmethod
+    def get_valid_integer_input(prompt, valid_choices=None):
+        try:
+            value = int(input(prompt))
+            if valid_choices is not None and value not in valid_choices:
+                return None
+            return value
+        except ValueError:
+            return None
+
+    @staticmethod
+    def get_valid_float_input(prompt):
+        try:
+            return float(input(prompt))
+        except ValueError:
+            return None
