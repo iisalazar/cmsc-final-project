@@ -1,4 +1,5 @@
 from services.GroupService import GroupService, CreateGroupDto
+from services.FriendService import FriendService
 from entities.Group import Group
 from utils.clearScreen import clear_screen
 
@@ -6,6 +7,7 @@ from utils.clearScreen import clear_screen
 class GroupController:
     def __init__(self) -> None:
         self.group_service = GroupService()
+        self.friend_service = FriendService()
         self.request_method_map = {
             1: self.create_group,
             2: self.update_group,
@@ -58,31 +60,74 @@ class GroupController:
         name = input("Enter group name: ")
         group = CreateGroupDto(name=name)
         self.group_service.create_group(group)
+        print("Successfully added Group " + name)
 
     def update_group(self):
         _id = int(input("Enter group id: "))
         name = input("Enter group name: ")
         group = CreateGroupDto(name=name)
         self.group_service.update_group(_id, group)
+        print("Successfully renamed your group to " + name)
 
     def delete_group(self):
         _id = int(input("Enter group id: "))
         self.group_service.delete_group(_id)
+        print("Successfully deleted group")
 
     def view_all_groups(self):
         groups = self.group_service.view_all_groups()
-        for group in groups:
-            print(group)
+        if len(groups) == 0:
+            print("There are no existing groups")
+        else:
+            print("\nAll groups: \n")
+            for group in groups:
+                print("Group ID: " + str(group["id"]))
+                print("Name: " + group["name"])
+                print("Date created: " + str(group["date"]))
+                print("------------------------------------")
 
     def add_person_to_group(self):
         group_id = int(input("Enter group id: "))
         person_id = int(input("Enter person id: "))
-        self.group_service.add_person_to_group(person_id, group_id)
+        members = self.group_service.view_all_persons_in_group(group_id)
+        friend = self.friend_service.get_friend_by_id(person_id)
+        group = self.group_service.view_group(group_id)
+
+        isFriendAlreadyInGroup = False
+        for member in members:
+            if member.id != person_id:
+                continue
+            else:
+                isFriendAlreadyInGroup = True
+                break
+
+        if isFriendAlreadyInGroup:
+             print(friend.name + " is already in " + group.name)
+        else:
+            self.group_service.add_person_to_group(person_id, group_id)
+            print("Successfully added " + friend.name + " to " + group.name)
+           
 
     def remove_person_from_group(self):
         group_id = int(input("Enter group id: "))
         person_id = int(input("Enter person id: "))
-        self.group_service.remove_person_from_group(person_id, group_id)
+        members = self.group_service.view_all_persons_in_group(group_id)
+        friend = self.friend_service.get_friend_by_id(person_id)
+        group = self.group_service.view_group(group_id)
+
+        isFriendInGroup = False
+        for member in members:
+            if member.id != person_id:
+                continue
+            else:
+                isFriendInGroup = True
+                break
+
+        if isFriendInGroup:
+            self.group_service.remove_person_from_group(person_id, group_id)
+            print("Successfully removed " + friend.name + " to " + group.name)
+        else:
+            print(friend.name + " is not in " + group.name)
 
     def view_group(self):
         _id = int(input("Enter group id: "))
