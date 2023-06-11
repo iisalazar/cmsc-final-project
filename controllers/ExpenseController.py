@@ -26,6 +26,8 @@ class ExpenseController:
     GROUP_ID_PROMPT = "Enter group id: "
     EXPENSE_ID_PROMPT = "Enter expense id: "
     PERSON_ID_INPUT = "Enter person id: "
+    LENDER_ID_INPUT = "Enter lender id: "
+    LENDEE_ID_INPUT = "Enter lendee id: "
 
     def __init__(self):
         self.expense_service = ExpenseService()
@@ -69,6 +71,9 @@ class ExpenseController:
         amount = self.get_valid_float_input(self.AMOUNT_PROMPT)
         name = input(self.DESCRIPTION_PROMPT)
         person_id = self.get_valid_integer_input(self.PERSON_ID_PROMPT)
+        lender_id = self.get_valid_integer_input(self.LENDER_ID_INPUT)
+        lendee_id = self.get_valid_integer_input(self.LENDEE_ID_INPUT)
+
 
         if amount is None or person_id is None:
             print("Invalid input. Please enter a valid number.")
@@ -78,8 +83,8 @@ class ExpenseController:
             amount=amount,
             name=name,
             person_id=person_id,
-            lender_id=1,
-            lendee_id=person_id,
+            lender_id=lender_id,
+            lendee_id=lendee_id,
         )
         result = self.expense_service.create_friend_expense(dto)
 
