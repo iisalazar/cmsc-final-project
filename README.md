@@ -11,6 +11,7 @@ A CLI app that simulates the features of the mobile app 'Splitwise'
 - pip
 - pipenv
 - mysql-python-connector
+- python-dotenv
 
 ## Pre-requisites
 1. Must have `mariadb` or `mysql` installed on your local machine
