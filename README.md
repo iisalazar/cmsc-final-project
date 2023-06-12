@@ -15,7 +15,7 @@ A CLI app that simulates the features of the mobile app 'Splitwise'
 ## Pre-requisites
 1. Must have `mariadb` or `mysql` installed on your local machine
 2. Create the tables and seed the database by using the SQL query dumps provided
-3. Create a copy of the .env.copy file to ".env" file, then populate the fields
+3. Create a copy of the .env.copy file to ".env" file, then populate the fields `MYSQL_HOST`, `MYSQL_USER`, and `MYSQL_PASSWORD`
 
 ## How to run
 1. You must have python3 and pipenv installed
