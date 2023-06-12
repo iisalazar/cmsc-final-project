@@ -1,3 +1,47 @@
+-- Creating database and tables
+CREATE DATABASE IF NOT EXISTS splitwise_clone;
+USE splitwise_clone;
+
+CREATE TABLE IF NOT EXISTS person (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  isUser BOOLEAN NOT NULL DEFAULT FALSE,
+  CONSTRAINT person_id_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS grp (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  dateCreated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT grp_id_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS person_grp (
+  personId INT NOT NULL,
+  grpId INT NOT NULL,
+  CONSTRAINT person_grp_id_pk PRIMARY KEY (personId, grpId),
+  CONSTRAINT person_grp_person_id_fk FOREIGN KEY (personId) REFERENCES person (id),
+  CONSTRAINT person_grp_grp_id_fk FOREIGN KEY (grpId) REFERENCES grp (id)
+);
+
+CREATE TABLE IF NOT EXISTS transaction (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  amount INT NOT NULL,
+  dateCreated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  personId INT,
+  grpId INT,
+  lenderId INT NOT NULL,
+  lendeeId INT NOT NULL,
+  type VARCHAR(255) NOT NULL,
+  CONSTRAINT transaction_id_pk PRIMARY KEY (id),
+  CONSTRAINT transaction_person_id_fk FOREIGN KEY (personId) REFERENCES person (id),
+  CONSTRAINT transaction_grp_id_fk FOREIGN KEY (grpId) REFERENCES grp (id),
+  CONSTRAINT transaction_lender_id_fk FOREIGN KEY (lenderId) REFERENCES person (id),
+  CONSTRAINT transaction_lendee_id_fk FOREIGN KEY (lendeeId) REFERENCES person (id)
+);
+
+
 INSERT INTO person (name, isUser) 
 VALUES 
   ('Ian', TRUE);
