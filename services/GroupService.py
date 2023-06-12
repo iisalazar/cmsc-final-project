@@ -133,3 +133,16 @@ class GroupService:
             groups.append(Group(row[0], row[1], row[2]))
 
         return groups
+
+    def check_if_person_in_group(self, person_id: int, group_id: int) -> bool:
+        cursor = db.cursor()
+        cursor.execute(
+            "SELECT * FROM person_grp WHERE personId = %s AND grpId = %s",
+            (person_id, group_id),
+        )
+
+        row = cursor.fetchone()
+
+        if row is None:
+            return False
+        return True
