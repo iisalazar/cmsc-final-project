@@ -57,13 +57,14 @@ class FriendService:
         return f"Successfully edited a friend with id: {id}"
 
     
-    def get_friend_by_id(self,  friend_id: int) -> Person:      
+    def get_friend_by_id(self,  friend_id: int) -> Person | None:      
         cursor = db.cursor()
         cursor.execute("SELECT * FROM person WHERE person.id = %s", (friend_id,))
         friend = cursor.fetchone()
 
-
-        f = Person(friend[0], friend[1], friend[2])
-
-        return f
+        if friend == None:
+            return None
+        else:
+            f = Person(friend[0], friend[1], friend[2])
+            return f
 
