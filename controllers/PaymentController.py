@@ -58,6 +58,8 @@ class PaymentController:
         amount = self.get_valid_float_input("Enter amount: ")
         name = input("Enter description: ")
         person_id = self.get_valid_integer_input("Enter person id: ")
+        lender_id = self.get_valid_integer_input("Enter lender id: ")
+        lendee_id = self.get_valid_integer_input("Enter lendee id: ")
 
         if amount is None or person_id is None:
             print("Invalid input. Please enter a valid number.")
@@ -67,8 +69,8 @@ class PaymentController:
             amount=amount,
             name=name,
             person_id=person_id,
-            lender_id=person_id,
-            lendee_id=1,
+            lender_id=lender_id,
+            lendee_id=lendee_id,
         )
         self.payment_service.create_friend_payment(dto)
 
