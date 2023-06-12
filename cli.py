@@ -4,6 +4,14 @@ from controllers.PaymentController import PaymentController
 from controllers.FriendController import FriendController
 from controllers.GroupController import GroupController
 from utils.clearScreen import clear_screen
+from utils.instructions import instructions
+
+from db import db
+from services.FriendService import (
+    FriendService,
+)
+from entities.Person import Person
+
 
 
 class Application:
@@ -40,12 +48,57 @@ class Application:
         elif choice == 5:
             self.controllers["report"].handle_user_input()
         elif choice == 6:
+            instructions()
+        elif choice == 7:
             clear_screen()
         else:
             print("Invalid choice")
 
     def run(self) -> None:
         choice = -1
+        while True:
+            has_user = self.get_user()
+
+            if has_user:
+                while choice != 0:
+                    self.print_choices()
+                    choice = int(input("Enter choice: "))
+                    self.handle_request(choice)
+                break
+            else:
+                print(
+    '''
+,-----------------------------------,
+| █░█░█ █▀▀ █░░ █▀▀ █▀█ █▀▄▀█ █▀▀ █ |
+| ▀▄▀▄▀ ██▄ █▄▄ █▄▄ █▄█ █░▀░█ ██▄ ▄ |
+'-----------------------------------' '''
+        )
+                user = input("Enter your name to start: ")
+                self.add_user(user)
+
+    def get_user(self):
+        cursor = db.cursor()
+        cursor.execute(
+            "SELECT * from person where isUser = 1"
+        )
+        user = cursor.fetchone()
+
+        if not user:
+            return False
+        else:
+            u = Person(user[0], user[1], user[2])
+
+            return True
+    
+    def add_user(self, name):
+        cursor = db.cursor()
+        cursor.execute(
+            "INSERT INTO person (name, isUser) VALUES (%s, true)", (name,)
+        )
+        db.commit()
+        cursor.close()
+
+    def print_choices(self):
         print(
     '''
 ,-------------------------------------------------------,
@@ -53,23 +106,18 @@ class Application:
 | ▄█ █▀▀ █▄▄ █ ░█░ ▀▄▀▄▀ █ ▄█ ██▄  █▄▄ █▄▄ █▄█ █░▀█ ██▄ |
 '-------------------------------------------------------' '''
         )
-        while choice != 0:
-            self.print_choices()
-            choice = int(input("Enter choice: "))
-            self.handle_request(choice)
-
-    def print_choices(self):
         print(
             """
 
----------🅼 🅴 🅽 🆄------------
+------------🅼 🅴 🅽 🆄------------
 0. Exit
-1. CRUD expense
-2. CRUD payment
-3. CRUD friend
-4. CRUD group
-5. Generate report
-6. Clear screen
+1. Expenses Section
+2. Payment Section
+3. Friend Section
+4. Groups Section
+5. Reports Section
+6. How to use?
+7. Clear screen
 -------------------------------
         """
         )

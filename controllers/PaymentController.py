@@ -1,3 +1,5 @@
+from services.FriendService import FriendService
+from services.GroupService import GroupService
 from services.PaymentService import (
     PaymentService,
     CreateFriendPaymentDto,
@@ -9,7 +11,7 @@ from utils.clearScreen import clear_screen
 
 class PaymentController:
     CHOICE_PROMPT = """
----------------🅼 🅴 🅽 🆄---------------
+----------------🅼 🅴 🅽 🆄----------------
 0. Go Back
 1. Create payment for a person
 2. Create payment for a group
@@ -22,6 +24,8 @@ class PaymentController:
 
     def __init__(self):
         self.payment_service = PaymentService()
+        self.friend_service = FriendService()
+        self.group_service = GroupService()
         self.request_method_map = {
             1: self.create_payment,
             2: self.create_group_payment,
@@ -33,11 +37,11 @@ class PaymentController:
 
     def handle_user_input(self):
         print(
-    '''
+            """
 ,-----------------------------------------------------------,
 | █▀█ ▄▀█ █▄█ █▀▄▀█ █▀▀ █▄░█ ▀█▀  █▀ █▀▀ █▀▀ ▀█▀ █ █▀█ █▄░█ |
 | █▀▀ █▀█ ░█░ █░▀░█ ██▄ █░▀█ ░█░  ▄█ ██▄ █▄▄ ░█░ █ █▄█ █░▀█ |
-'-----------------------------------------------------------' '''
+'-----------------------------------------------------------' """
         )
         valid_choices = list(self.request_method_map.keys()) + [0]
         choice = -1
@@ -57,40 +61,102 @@ class PaymentController:
     def create_payment(self):
         amount = self.get_valid_float_input("Enter amount: ")
         name = input("Enter description: ")
-        person_id = self.get_valid_integer_input("Enter person id: ")
+        payer_id = self.get_valid_integer_input("Enter person ID who wants to pay: ")
+        payee_id = self.get_valid_integer_input(
+            "Enter person ID who will receive the payment: "
+        )
 
-        if amount is None or person_id is None:
+        if amount is None or payer_id is None or payee_id is None:
             print("Invalid input. Please enter a valid number.")
+            return
+
+        # check if person exists
+        payer = self.friend_service.get_friend_by_id(payer_id)
+        payee = self.friend_service.get_friend_by_id(payee_id)
+
+        if payer is None:
+            print("Payer does not exist")
+            return
+
+        if payee is None:
+            print("Payee does not exist")
             return
 
         dto = CreateFriendPaymentDto(
             amount=amount,
             name=name,
-            person_id=person_id,
-            lender_id=person_id,
-            lendee_id=1,
+            person_id=payee_id,
+            lender_id=payer_id,
+            lendee_id=payee_id,
         )
-        self.payment_service.create_friend_payment(dto)
+        transaction = self.payment_service.create_friend_payment(dto)
+
+        print("Created new payment")
+        print("Payment ID: ", transaction.id)
+        print("Amount: ", transaction.amount)
+        print("Description: ", transaction.name)
+        print("Payer ID: ", transaction.lenderId)
+        print("Payee ID: ", transaction.lendeeId)
+        print("======================")
 
     def create_group_payment(self):
         amount = self.get_valid_float_input("Enter amount: ")
         name = input("Enter description: ")
         group_id = self.get_valid_integer_input("Enter group id: ")
-        lender_id = self.get_valid_integer_input("Enter lender id: ")
-        lendee_id = self.get_valid_integer_input("Enter lendee id: ")
+        payer_id = self.get_valid_integer_input("Enter payer's ID: ")
+        payee_id = self.get_valid_integer_input("Enter payee's ID: ")
 
-        if amount is None or group_id is None or lender_id is None or lendee_id is None:
+        if amount is None or group_id is None or payer_id is None or payee_id is None:
             print("Invalid input. Please enter a valid number.")
+            return
+
+        group = self.group_service.view_group(group_id)
+        payer = self.friend_service.get_friend_by_id(payer_id)
+        payee = self.friend_service.get_friend_by_id(payee_id)
+
+        if group is None:
+            print("Group does not exist")
+            return
+
+        if payer is None:
+            print("Payer does not exist")
+            return
+
+        if payee is None:
+            print("Payee does not exist")
+            return
+
+        # check if both payer and payee are in the group
+        person_in_group = self.group_service.check_if_person_in_group(
+            payer_id, group_id
+        )
+        if not person_in_group:
+            print("Payer is not in the group")
+            return
+
+        person_in_group = self.group_service.check_if_person_in_group(
+            payee_id, group_id
+        )
+        if not person_in_group:
+            print("Payee is not in the group")
             return
 
         dto = CreateGroupPaymentDto(
             amount=amount,
             name=name,
             grp_id=group_id,
-            lender_id=lender_id,
-            lendee_id=lendee_id,
+            lender_id=payer_id,
+            lendee_id=payee_id,
         )
-        self.payment_service.create_group_payment(dto)
+        transaction = self.payment_service.create_group_payment(dto)
+        print("\nCreated new payment")
+        print("\tPayment ID: ", transaction.id)
+        print("\tAmount: ", transaction.amount)
+        print("\tDescription: ", transaction.name)
+        print("\tPayer ID: ", transaction.lenderId)
+        print("\tPayee ID: ", transaction.lendeeId)
+        print("\tGroup ID: ", transaction.grpId)
+        print("======================")
 
     def update_payment(self):
         payment_id = self.get_valid_integer_input("Enter payment id: ")
@@ -101,11 +167,23 @@ class PaymentController:
             print("Invalid input. Please enter a valid number.")
             return
 
+        payment = self.payment_service.get_payment(payment_id)
+
+        if payment is None:
+            print("Payment does not exist")
+            return
+
         dto = UpdateTransactionDto(
             amount=amount,
             name=name,
         )
         self.payment_service.update_payment(payment_id, dto)
+
+        print("\nUpdated payment")
+        print("\tPayment ID: ", payment_id)
+        print("\tAmount: ", amount)
+        print("\tDescription: ", name)
+        print("======================")
 
     def delete_payment(self):
         payment_id = self.get_valid_integer_input("Enter payment id: ")
@@ -113,8 +191,14 @@ class PaymentController:
         if payment_id is None:
             print("Invalid input. Please enter a valid number.")
             return
+        payment = self.payment_service.get_payment(payment_id)
 
+        if payment is None:
+            print("Payment does not exist")
+            return
         self.payment_service.delete_payment(payment_id)
+
+        print("\nDeleted payment with id ", payment_id)
 
     def view_all_payments(self):
         person_id = self.get_valid_integer_input("Enter person id: ")
@@ -123,10 +207,27 @@ class PaymentController:
             print("Invalid input. Please enter a valid number.")
             return
 
+        # check if person exists
+        person = self.friend_service.get_friend_by_id(person_id)
+
+        if person is None:
+            print("Person does not exist")
+            return
+
         result = self.payment_service.view_payments(person_id)
         print("Payments:")
+        if len(result) == 0:
+            print("No payments found")
+            return
         for payment in result:
-            print(payment)
+            print("\tPayment ID: ", payment.id)
+            print("\tAmount: ", payment.amount)
+            print("\tDescription: ", payment.name)
+            print("\tPayer ID: ", payment.lenderId)
+            print("\tPayee ID: ", payment.lendeeId)
+            if payment.grpId is not None:
+                print("\tGroup ID: ", payment.grpId)
+            print("======================")
 
     @staticmethod
     def get_valid_integer_input(prompt, valid_choices=None):

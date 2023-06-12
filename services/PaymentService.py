@@ -83,7 +83,7 @@ class PaymentService(TransactionService):
             None,
             payment.grp_id,
             payment.lender_id,
-            None,
+            payment.lendee_id,
             "payment",
         )
 
@@ -120,3 +120,25 @@ class PaymentService(TransactionService):
             )
         cursor.close()
         return payments
+
+    def get_payment(self, payment_id: int) -> Transaction | None:
+        cursor = db.cursor()
+        cursor.execute(
+            "SELECT * FROM transaction WHERE id = %s AND type = 'payment'",
+            (payment_id,),
+        )
+        result = cursor.fetchone()
+        if result is None:
+            return None
+        cursor.close()
+        return Transaction(
+            result[0],
+            result[1],
+            result[2],
+            result[3],
+            result[4],
+            result[5],
+            result[6],
+            result[7],
+            result[8],
+        )
