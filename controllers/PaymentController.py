@@ -207,10 +207,27 @@ class PaymentController:
             print("Invalid input. Please enter a valid number.")
             return
 
+        # check if person exists
+        person = self.friend_service.get_friend_by_id(person_id)
+
+        if person is None:
+            print("Person does not exist")
+            return
+
         result = self.payment_service.view_payments(person_id)
         print("Payments:")
+        if len(result) == 0:
+            print("No payments found")
+            return
         for payment in result:
-            print(payment)
+            print("\tPayment ID: ", payment.id)
+            print("\tAmount: ", payment.amount)
+            print("\tDescription: ", payment.name)
+            print("\tPayer ID: ", payment.lenderId)
+            print("\tPayee ID: ", payment.lendeeId)
+            if payment.grpId is not None:
+                print("\tGroup ID: ", payment.grpId)
+            print("======================")
 
     @staticmethod
     def get_valid_integer_input(prompt, valid_choices=None):
