@@ -43,11 +43,11 @@ class ExpenseController:
 
     def handle_user_input(self):
         print(
-    '''
+            """
 ,-----------------------------------------------------------,
 | █▀▀ ▀▄▀ █▀█ █▀▀ █▄░█ █▀ █▀▀ █▀  █▀ █▀▀ █▀▀ ▀█▀ █ █▀█ █▄░█ |
 | ██▄ █░█ █▀▀ ██▄ █░▀█ ▄█ ██▄ ▄█  ▄█ ██▄ █▄▄ ░█░ █ █▄█ █░▀█ |
-'-----------------------------------------------------------' '''
+'-----------------------------------------------------------' """
         )
         valid_choices = list(self.request_method_map.keys()) + [0]
         choice = -1
@@ -73,7 +73,6 @@ class ExpenseController:
         person_id = self.get_valid_integer_input(self.PERSON_ID_PROMPT)
         lender_id = self.get_valid_integer_input(self.LENDER_ID_INPUT)
         lendee_id = self.get_valid_integer_input(self.LENDEE_ID_INPUT)
-
 
         if amount is None or person_id is None:
             print("Invalid input. Please enter a valid number.")
@@ -143,8 +142,15 @@ class ExpenseController:
 
         result = self.expense_service.get_expenses_with_friend(person_id)
         print("Expenses with friend:")
+        # prettify print here
         for expense in result:
-            print(expense)
+            print("\tExpense ID: ", expense.id)
+            print("\tAmount: ", expense.amount)
+            print("\tDescription: ", expense.name)
+            print("\tLender ID: ", expense.lenderId)
+            print("\tLendee ID: ", expense.lendeeId)
+            print("\tDate: ", expense.dateCreated)
+            print("\t=====================")
 
     @staticmethod
     def get_valid_integer_input(prompt, valid_choices=None):
