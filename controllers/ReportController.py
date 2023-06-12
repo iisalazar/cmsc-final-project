@@ -7,9 +7,9 @@ from utils.clearScreen import clear_screen
 
 class ReportController:
     CHOICE_PROMPT = """
-------------------🅼 🅴 🅽 🆄----------------------
+-------------------🅼 🅴 🅽 🆄-----------------------
 0. Go Back
-1. View all expenses made within a month
+1. View all expenses made within this month
 2. View all expenses made with a friend
 3. View all expenses made with a group
 4. View current balance from all expenses

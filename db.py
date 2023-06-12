@@ -1,9 +1,13 @@
+import os
 import mysql.connector
+from dotenv import load_dotenv
 
-MYSQL_HOST = "localhost"
-MYSQL_USER = "root"
-MYSQL_PASS = "UPlangmalakaz"
-MYSQL_DB = "splitwise_clone"
+load_dotenv()
+
+MYSQL_HOST = os.getenv("MYSQL_HOST")
+MYSQL_USER = os.getenv("MYSQL_USER")
+MYSQL_PASS = os.getenv("MYSQL_PASSWORD")
+MYSQL_DB = os.getenv("DATABASE")
 
 
 db = mysql.connector.connect(
