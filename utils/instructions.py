@@ -8,7 +8,7 @@ def instructions():
         )
         print(
 '''
-------------------🅶 🆄 🅸 🅳 🅴-----------------
+-----------------🅶 🆄 🅸 🅳 🅴------------------
 Splitwise is an app for dividing expenses 
 with your friends. It allows you and your 
 friends to input multiple bills and keep 
@@ -25,7 +25,7 @@ a basic rundown of how it works.
   your group.
 
 ➢ Should you want to manage expenses by
-  more than 1 friend, proceed to FROUPS
+  more than 1 friend, proceed to GROUPS
   SECTION. Add a group and assign your
   friends to that group.
 
