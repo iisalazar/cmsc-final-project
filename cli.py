@@ -4,6 +4,7 @@ from controllers.PaymentController import PaymentController
 from controllers.FriendController import FriendController
 from controllers.GroupController import GroupController
 from utils.clearScreen import clear_screen
+from utils.instructions import instructions
 
 from db import db
 from services.FriendService import (
@@ -47,6 +48,8 @@ class Application:
         elif choice == 5:
             self.controllers["report"].handle_user_input()
         elif choice == 6:
+            instructions()
+        elif choice == 7:
             clear_screen()
         else:
             print("Invalid choice")
@@ -108,12 +111,13 @@ class Application:
 
 ------------🅼 🅴 🅽 🆄------------
 0. Exit
-1. CRUD expense
-2. CRUD payment
-3. CRUD friend
-4. CRUD group
-5. Generate report
-6. Clear screen
+1. Expenses Section
+2. Payment Section
+3. Friend Section
+4. Groups Section
+5. Reports Section
+6. How to use?
+7. Clear screen
 -------------------------------
         """
         )
